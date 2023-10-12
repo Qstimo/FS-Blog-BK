@@ -11,11 +11,16 @@ export const postCreateValidation = [
     body('title', 'Введите заголовок статьи').isLength({ min: 3 }).isString(),
     body('text', 'Введите текст статьи').isLength({ min: 10 }).isString(),
     body('tags', 'Неверный формат тэгов(укажите массив)').optional().isString(),
-    body('avatarUrl', 'Неверная ссылка на изображение').optional().isString(),
+    body('imageUrl', 'Неверная ссылка на изображение').optional().isString(),
 
 ]
 export const loginValidation = [
     body('email', 'Неверный формат почты').isEmail(),
     body('password', 'Неверный формат пароля').isLength({ min: 5 }),
+
+]
+export const CommentCreateValidation = [
+    body('text', 'Введите текст').isLength({ min: 5 }).isString(),
+    body('imageUrl', 'Неверная ссылка на изображение').optional().isString(),
 
 ]
