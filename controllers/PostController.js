@@ -31,7 +31,7 @@ export const getOne = async (req, res) => {
         const post = await PostModel.findOneAndUpdate(
             { _id: postId },
             { $inc: { viewsCount: 1 } },
-            { new: true } // Используйте опцию "new" для возврата обновленного документа
+            { new: true }
         ).populate('user').populate('comments')
         if (!post) { res.status(500).json({ message: "posts not find" }) }
         res.json(post);

@@ -41,3 +41,15 @@ export const create = async (req, res) => {
         res.status(500).json({ message: 'Ошибка сервера' });
     }
 };
+
+export const remove = async (req, res) => {
+    try {
+        const _id = req.body.id;
+        const doc = await CommentsModel.findByIdAndDelete({ _id: _id })
+        if (!doc) { res.status(500).json({ message: "posts not delete" }) }
+        res.json({ success: true });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "posts not delete" })
+    }
+}
