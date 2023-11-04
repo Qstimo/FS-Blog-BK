@@ -5,7 +5,7 @@ export const create = async (req, res) => {
         const doc = new PostModel({
             title: req.body.title,
             text: req.body.text,
-            tags: req.body.tags.split(' '),
+            tags: req.body.tags.split(' ').filter(i => i !== " "),
             imageUrl: req.body.imageUrl,
             user: req.userId
         })
@@ -18,7 +18,23 @@ export const create = async (req, res) => {
 }
 export const getPosts = async (req, res) => {
     try {
-        const posts = await PostModel.find().populate('user').exec();
+        const { searchTerm } = req.query;
+        let query = {};
+        if (searchTerm) {
+            query = {
+                $or: [
+                    { title: { $regex: searchTerm, $options: 'i' } },
+                    //поиск по тайтлу
+                    { text: { $regex: searchTerm, $options: 'i' } },
+                    //поиск по тексту
+                ]
+            }
+        }
+
+        const posts = await PostModel.find(query)
+            .populate('user')
+            .sort({ createdAt: 'desc' })
+            .exec();
         res.json(posts);
     } catch (error) {
         console.log(error)
@@ -32,7 +48,7 @@ export const getOne = async (req, res) => {
             { _id: postId },
             { $inc: { viewsCount: 1 } },
             { new: true }
-        ).populate('user').populate('comments')
+        ).populate('user').populate('comments').populate('user')
         if (!post) { res.status(500).json({ message: "posts not find" }) }
         res.json(post);
     } catch (error) {
@@ -48,7 +64,7 @@ export const update = async (req, res) => {
             {
                 title: req.body.title,
                 text: req.body.text,
-                tags: (req.body.tags?.split(' ') || []),
+                tags: (req.body.tags?.split(' ').filter(i => i !== "") || []),
                 imageUrl: req.body.imageUrl,
             },
         );

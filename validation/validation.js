@@ -4,7 +4,7 @@ export const registerValidation = [
     body('email', 'Неверный формат почты').isEmail(),
     body('fullName', 'Неверный формат имени').isLength({ min: 2 }),
     body('password', 'Неверный формат пароля').isLength({ min: 5 }),
-    body('avatarUrl', 'Неверный формат изображения').optional().isURL(),
+    body('avatarUrl', 'Неверный формат изображения').optional().isString(),
 
 ]
 export const postCreateValidation = [

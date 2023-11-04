@@ -9,11 +9,13 @@ import * as UserController from "./controllers/UserController.js";
 import * as PostController from "./controllers/PostController.js";
 import * as CommentController from "./controllers/CommentConrtoller.js";
 import checkAuth from "./utils/checkAuth.js";
+import cors from 'cors'
 
 
 const app = express();
 const port = '4444'
 app.use(express.json());
+app.use(cors());
 
 
 mongoose.connect('mongodb+srv://admin:888888@cluster0.mlaiqal.mongodb.net/myblog?retryWrites=true&w=majority').then(
