@@ -16,6 +16,29 @@ export const create = async (req, res) => {
         res.status(500).json({ message: "post not create" })
     }
 }
+export const getPopulatePosts = async (req, res) => {
+    try {
+        const { searchTerm } = req.query;
+        let query = {};
+        if (searchTerm) {
+            query = {
+                $or: [
+                    { title: { $regex: searchTerm, $options: 'i' } },
+                    { text: { $regex: searchTerm, $options: 'i' } },
+                ]
+            }
+        }
+        const posts = await PostModel.find(query)
+            .populate('user')
+            .sort({ viewsCount: 'desc' })
+            .exec();
+        res.json(posts)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "posts not find" })
+    }
+}
 export const getPosts = async (req, res) => {
     try {
         const { searchTerm } = req.query;
@@ -27,6 +50,7 @@ export const getPosts = async (req, res) => {
                     //поиск по тайтлу
                     { text: { $regex: searchTerm, $options: 'i' } },
                     //поиск по тексту
+                    { tags: { $regex: searchTerm, $options: 'i' } }
                 ]
             }
         }
@@ -41,6 +65,29 @@ export const getPosts = async (req, res) => {
         res.status(500).json({ message: "posts not find" })
     }
 }
+export const getTagsPosts = async (req, res) => {
+    try {
+        const { searchTerm } = req.query;
+        let query = {};
+        if (searchTerm) {
+            query = {
+                $or: [
+                    { tags: { $regex: searchTerm, $options: 'i' } },
+                    //поиск по tag
+                ]
+            }
+        }
+
+        const posts = await PostModel.find(query)
+            .populate('user')
+            .sort({ createdAt: 'desc' })
+            .exec();
+        res.json(posts);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "tags not find" })
+    }
+}
 export const getOne = async (req, res) => {
     try {
         const postId = req.params.id;
@@ -49,7 +96,7 @@ export const getOne = async (req, res) => {
             { $inc: { viewsCount: 1 } },
             { new: true }
         ).populate('user').populate('comments').populate('user')
-        if (!post) { res.status(500).json({ message: "posts not find" }) }
+        if (!post) { return res.status(500).json({ message: "posts not find" }) }
         res.json(post);
     } catch (error) {
         console.log(error)
@@ -97,5 +144,14 @@ export const getLastTags = async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: "Не удалось получить тэги" })
+    }
+}
+export const getLastPosts = async (req, res) => {
+    try {
+        const posts = await PostModel.find().sort({ viewsCount: 'desc' }).limit(5).exec();
+        res.json(posts);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Не удалось получить посты" })
     }
 }

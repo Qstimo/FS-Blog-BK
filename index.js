@@ -63,10 +63,14 @@ app.get('/auth/me', checkAuth, UserController.getMe);
 
 app.post('/posts', checkAuth, postCreateValidation, handleValid, PostController.create)
 app.get('/posts', PostController.getPosts);
+app.get('/posts/populate', PostController.getPopulatePosts);
+app.get('/posts/last/populate', PostController.getLastPosts);
 app.get('/posts/:id', PostController.getOne);
 app.patch('/posts/:id', checkAuth, PostController.update);
 app.delete('/posts/:id', PostController.remove);
+
 app.get('/tags', PostController.getLastTags);
+app.get('/searchtags', PostController.getTagsPosts);
 
 app.post('/posts/:postId/comments', CommentCreateValidation, checkAuth, handleValid, CommentController.create);
 app.get('/posts/:postId/comments', CommentController.getAll);
