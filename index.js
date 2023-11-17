@@ -65,6 +65,7 @@ app.post('/posts', checkAuth, postCreateValidation, handleValid, PostController.
 app.get('/posts', PostController.getPosts);
 app.get('/posts/populate', PostController.getPopulatePosts);
 app.get('/posts/last/populate', PostController.getLastPosts);
+app.get('/posts/user/:id', PostController.getUserPost);
 app.get('/posts/:id', PostController.getOne);
 app.patch('/posts/:id', checkAuth, PostController.update);
 app.delete('/posts/:id', PostController.remove);

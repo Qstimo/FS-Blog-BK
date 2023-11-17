@@ -1,4 +1,5 @@
 import PostModel from '../models/Post.js'
+import { Types } from 'mongoose';
 
 export const create = async (req, res) => {
     try {
@@ -103,6 +104,25 @@ export const getOne = async (req, res) => {
         res.status(500).json({ message: "posts not find" })
     }
 };
+
+export const getUserPost = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const userIdObject = new Types.ObjectId(userId);
+        const posts = await PostModel.find(
+            { user: userIdObject }
+        ).populate('user');
+
+        if (!posts || posts.length === 0) {
+            return res.status(404).json({ message: "No posts found for the user" },);
+        }
+        res.json(posts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 export const update = async (req, res) => {
     try {
         const postId = req.params.id;
