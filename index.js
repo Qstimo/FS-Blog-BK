@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 
-mongoose.connect('mongodb+srv://admin:888888@cluster0.mlaiqal.mongodb.net/myblog?retryWrites=true&w=majority').then(
+mongoose.connect(MONGODB_URL).then(
     console.log('DB OK')).catch(
         err => console.log('DB erroe', err));
 
