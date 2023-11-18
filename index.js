@@ -11,14 +11,12 @@ import * as CommentController from "./controllers/CommentConrtoller.js";
 import checkAuth from "./utils/checkAuth.js";
 import cors from 'cors'
 
-
 const app = express();
 const POST = '4444'
 app.use(express.json());
 app.use(cors());
 
-
-mongoose.connect(MONGODB_URL).then(
+mongoose.connect(process.env.MONGODB_API).then(
     console.log('DB OK')).catch(
         err => console.log('DB erroe', err));
 
@@ -37,7 +35,7 @@ const upload = multer({ storage })
 app.use('/uploads', express.static('storage'))
 
 
-app.listen(PORT, (err) => {
+app.listen(process.env.PORT || PORT, (err) => {
     if (err) { return console.log(err); }
     console.log('Server OK')
 });
