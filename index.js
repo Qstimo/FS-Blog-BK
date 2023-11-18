@@ -12,7 +12,7 @@ import checkAuth from "./utils/checkAuth.js";
 import cors from 'cors'
 
 const app = express();
-const POST = '4444'
+const PORT = '4444'
 app.use(express.json());
 app.use(cors());
 
