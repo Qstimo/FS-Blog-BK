@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
+import { config } from "dotenv";
 
 import handleValid from "./utils/handleValid.js";
 import { registerValidation, loginValidation, postCreateValidation, CommentCreateValidation } from "./validation/validation.js";
@@ -15,20 +16,21 @@ const app = express();
 const PORT = '4444'
 app.use(express.json());
 app.use(cors());
+config();
 
-mongoose.connect(process.env.MONGODB_API).then(
+mongoose.connect(process.env.MONGODB_URL).then(
     console.log('DB OK')).catch(
         err => console.log('DB erroe', err));
 
-const storage = multer.diskStorage({
-    destination: (_, __, cb) => {
-        cb(null, 'storage')
-    },
-    filename: (_, file, cb) => {
-        cb(null, file.originalname)
-    },
-})
-
+        const storage = multer.diskStorage({
+            destination: (_, __, cb) => {
+                cb(null, 'storage')
+            },
+            filename: (_, file, cb) => {
+                cb(null, file.originalname)
+            },
+        })
+        
 const upload = multer({ storage })
 
 
