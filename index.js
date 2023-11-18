@@ -13,7 +13,7 @@ import cors from 'cors'
 
 
 const app = express();
-const port = '4444'
+const POST = '4444'
 app.use(express.json());
 app.use(cors());
 
@@ -37,7 +37,7 @@ const upload = multer({ storage })
 app.use('/uploads', express.static('storage'))
 
 
-app.listen(port, (err) => {
+app.listen(PORT, (err) => {
     if (err) { return console.log(err); }
     console.log('Server OK')
 });
