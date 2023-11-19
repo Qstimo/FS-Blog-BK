@@ -19,12 +19,12 @@ const PORT = '4444'
 app.use(express.json());
 app.use(cors());
 config();
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://fs-blog-ft.vercel.app');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', 'https://fs-blog-ft.vercel.app');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//     next();
+// });
 mongoose.connect(process.env.MONGODB_URL).then(
     console.log('DB OK')).catch(
         err => console.log('DB erroe', err));
@@ -66,7 +66,7 @@ app.get('/', (req, res) => {
 
 app.post('/auth/register', registerValidation, handleValid, UserController.register);
 app.post('/auth/login', loginValidation, handleValid, UserController.login);
-app.patch('/auth/login', checkAuth, registerValidation, handleValid, UserController.update);
+app.patch('/auth/login', checkAuth,  UserController.update);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
 app.post('/posts', checkAuth, postCreateValidation, handleValid, PostController.create)
