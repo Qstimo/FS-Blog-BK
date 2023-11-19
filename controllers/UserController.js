@@ -38,6 +38,32 @@ export const login = async (req, res) => {
         return res.status(404).json({ message: "user not found" })
     }
 };
+
+export const update = async (req, res) => {
+    try {
+        const userid = req.userId
+
+        const password = req.body.password;
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt)
+
+        await UserModel.updateOne(
+            { _id: userid },
+            {
+                email: req.body.email,
+                fullName: req.body.fullName,
+                avatarUrl: req.body.avatarUrl,
+                passwordHash: hash,
+            }
+        )
+        res.json({ success: true });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "user not update" })
+    }
+};
+
+
 export const getMe = async (req, res) => {
     try {
         const user = await UserModel.findById(req.userId);

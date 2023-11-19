@@ -66,6 +66,7 @@ app.get('/', (req, res) => {
 
 app.post('/auth/register', registerValidation, handleValid, UserController.register);
 app.post('/auth/login', loginValidation, handleValid, UserController.login);
+app.patch('/auth/login', checkAuth, registerValidation, handleValid, UserController.update);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
 app.post('/posts', checkAuth, postCreateValidation, handleValid, PostController.create)
