@@ -12,12 +12,19 @@ import * as CommentController from "./controllers/CommentConrtoller.js";
 import checkAuth from "./utils/checkAuth.js";
 import cors from 'cors'
 
+
+
 const app = express();
 const PORT = '4444'
 app.use(express.json());
 app.use(cors());
 config();
-
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://fs-blog-ft.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 mongoose.connect(process.env.MONGODB_URL).then(
     console.log('DB OK')).catch(
         err => console.log('DB erroe', err));
