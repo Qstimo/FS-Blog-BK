@@ -42,18 +42,11 @@ export const login = async (req, res) => {
 export const update = async (req, res) => {
     try {
         const userid = req.userId
-
-        const password = req.body.password;
-        const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(password, salt)
-
         await UserModel.updateOne(
             { _id: userid },
             {
-                email: req.body.email,
                 fullName: req.body.fullName,
                 avatarUrl: req.body.avatarUrl,
-                passwordHash: hash,
             }
         )
         res.json({ success: true });
