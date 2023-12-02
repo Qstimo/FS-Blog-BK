@@ -44,7 +44,8 @@ export const create = async (req, res) => {
 
 export const remove = async (req, res) => {
     try {
-        const _id = req.body.id;
+        const _id = req.params.id;
+        console.log(_id);
         const doc = await CommentsModel.findByIdAndDelete({ _id })
         if (!doc) { res.status(500).json({ message: "posts not delete" }) }
         res.json({ success: true });

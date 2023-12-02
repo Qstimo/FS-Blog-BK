@@ -83,5 +83,5 @@ app.get('/searchtags', PostController.getTagsPosts);
 
 app.post('/posts/:postId/comments', CommentCreateValidation, checkAuth, handleValid, CommentController.create);
 app.get('/posts/:postId/comments', CommentController.getAll);
-app.delete('/posts/:postId/comments', checkAuth, CommentController.remove);
+app.delete('/posts/comments/:id', checkAuth, CommentController.remove);
 
