@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
 import { config } from "dotenv";
+import fs from "fs";
 
 import handleValid from "./utils/handleValid.js";
 import { registerValidation, loginValidation, postCreateValidation, CommentCreateValidation } from "./validation/validation.js";
@@ -31,6 +32,9 @@ mongoose.connect(process.env.MONGODB_URL).then(
 
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
+        if (!fs.existsSync('storage')) {
+            fs.mkdirSync('storage');
+        }
         cb(null, 'storage')
     },
     filename: (_, file, cb) => {
